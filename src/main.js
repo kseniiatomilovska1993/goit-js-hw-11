@@ -13,10 +13,11 @@ const form = document.querySelector('.form');
 
 form.addEventListener('submit', handleSubmit);
 
-async function handleSubmit(event) {
+function handleSubmit(event) {
   event.preventDefault();
 
-  const query = event.currentTarget.elements['search-text'].value.trim();
+  const form = event.currentTarget;
+  const query = form.elements['search-text'].value.trim();
 
   if (!query) {
     iziToast.warning({
@@ -30,28 +31,29 @@ async function handleSubmit(event) {
   clearGallery();
   showLoader();
 
-  try {
-    const data = await getImagesByQuery(query);
+  getImagesByQuery(query)
+    .then(data => {
+      if (data.hits.length === 0) {
+        iziToast.error({
+          title: 'Error',
+          message:
+            'Sorry, there are no images matching your search query. Please try again!',
+          position: 'topRight',
+        });
+        return;
+      }
 
-    if (data.hits.length === 0) {
+      createGallery(data.hits);
+    })
+    .catch(() => {
       iziToast.error({
         title: 'Error',
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
+        message: 'Something went wrong. Please try again later.',
         position: 'topRight',
       });
-      return;
-    }
-
-    createGallery(data.hits);
-  } catch (error) {
-    iziToast.error({
-      title: 'Error',
-      message: 'Something went wrong. Please try again later.',
-      position: 'topRight',
+    })
+    .finally(() => {
+      hideLoader();
+      form.reset();
     });
-  } finally {
-    hideLoader();
-    event.currentTarget.reset();
-  }
 }
