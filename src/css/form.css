@@ -1,0 +1,38 @@
+.form {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 40px 0;
+}
+
+.form-input {
+  min-width: 280px;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid #808080;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 200ms ease-in;
+}
+
+.form-input:focus {
+  border-color: #4e75ff;
+}
+
+.form-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #4e75ff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 200ms ease-in;
+}
+
+.form-btn:hover,
+.form-btn:focus {
+  background-color: #3454db;
+}
